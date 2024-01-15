@@ -7,35 +7,25 @@ import * as SecureStore from 'expo-secure-store';
 import { useUser } from '../../contexts/UserContext';
 import { LoginValues } from '../../../types/LoginValues';
 import { Props } from '../../../types/Props'
+import {FullUser} from "../../../types/FullUser";
 
 const LoginPage = ({ navigation, handleLogin }: Props) => {
     const image = require('../../../../assets/Logo.png');
     const { loginUser } = useUser();
 
+    const user: FullUser = {
+        firstname: "John",
+        lastname: "Doe",
+        email: "john@example.com",
+        id: "12",
+    };
     const handleFormSubmit = async (values: LoginValues) => {
-        try {
-            const response = await fetch('http://noseryoung.ddns.net:3030/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(values),
-            });
 
-            if (response.ok) {
-                const data = await response.json();
-                loginUser(data.user);
-                const token = data.accessToken;
+                loginUser(user);
+                const token = "test";
                 SecureStore.setItemAsync('token', token);
                 handleLogin();
                 Alert.alert('Login successful');
-            } else {
-                Alert.alert('Login failed');
-            }
-        } catch (error) {
-            console.error('Error during login:', error);
-            Alert.alert('An unexpected error occurred during login');
-        }
     };
 
     const validationSchema = Yup.object().shape({
@@ -55,7 +45,7 @@ const LoginPage = ({ navigation, handleLogin }: Props) => {
                 variant="titleLarge"
                 style={{ color: 'red', fontWeight: 'bold' }}
             >
-                MovieCruxStudio
+                TVDB
             </Text>
             <Formik
                 initialValues={{ email: '', password: '' }}

@@ -16,25 +16,8 @@ const RegisterPage = ({ navigation }: Props) => {
   const image = require('../../../../assets/Logo.png');
 
   const handleFormSubmit = async (values: RegisterValues) => {
-    try {
-      const response = await fetch('http://noseryoung.ddns.net:3030/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(values),
-      });
-
-      if (response.ok) {
         navigation?.navigate('Login');
         Alert.alert('Sign Up successful');
-      } else {
-        Alert.alert('Sign Up failed');
-      }
-    } catch (error) {
-      console.error('Error during sign up:', error);
-      Alert.alert('An unexpected error occurred during sign up');
-    }
   };
 
   const validationSchema = Yup.object().shape({
@@ -56,7 +39,7 @@ const RegisterPage = ({ navigation }: Props) => {
         variant="titleLarge"
         style={{ color: 'red', fontWeight: 'bold' }}
       >
-        MovieCruxStudio
+        TVDB
       </Text>
       <Formik
         initialValues={{ firstname: '', lastname: '', email: '', password: '' }}

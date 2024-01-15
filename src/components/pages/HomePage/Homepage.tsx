@@ -25,7 +25,7 @@ function HomePage() {
         variant="titleLarge"
         style={{ color: "red", fontWeight: "bold", marginBottom: 10 }}
       >
-        MovieCruxStudio
+        TVDB
       </Text>
       <Text variant="labelLarge" style={{ color: "white" }}>
         Where Every Detail Sparks Cinematic Magic!
