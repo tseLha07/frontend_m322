@@ -1,14 +1,27 @@
 import { View, StyleSheet, Image, Alert, ScrollView } from "react-native";
 import { Card, IconButton, Text } from "react-native-paper";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Movie } from "../../../types/Movie";
 import MoviesService from "../../../services/MoviesService";
-import { Props } from '../../../types/Props'
-
+import { Props } from "../../../types/Props";
+import { FavoriteContext } from "../../contexts/FavoriteContext";
 
 function MovieDetailPage({ navigation, route }: Props) {
   const { movieId } = route.params;
   const [movie, setMovie] = useState<Movie>();
+  const { addToFavorites, removeFromFavorites } = useContext(FavoriteContext);
+
+  const [buttonPressed, setButtonPressed] = useState(false);
+
+  const renderFavoritesList = (movie: Movie) => {
+    if (buttonPressed) {
+      removeFromFavorites(movie);
+      setButtonPressed(false);
+    } else {
+      addToFavorites(movie);
+      setButtonPressed(true);
+    }
+  };
 
   useEffect(() => {
     function load() {
@@ -55,48 +68,55 @@ function MovieDetailPage({ navigation, route }: Props) {
 
   return (
     <ScrollView style={styles.container}>
-      
-    <View style={styles.container}>
-      <IconButton
-        icon={"close"}
-        iconColor="white"
-        style={styles.closeButtonContainer}
-        onPress={() => navigation?.navigate("MoviePage")}
-      />
-      <Card style={styles.cardContainer}>
-        {movie && (
-          <>
-            <Image source={{ uri: movie.thumbnail }} style={styles.image} />
-            <Text style={styles.cardTitle}>{movie.title}</Text>
+      <View style={styles.container}>
+        <IconButton
+          icon={"close"}
+          iconColor="white"
+          style={styles.closeButtonContainer}
+          onPress={() => navigation?.navigate("MoviePage")}
+        />
+        <Card style={styles.cardContainer}>
+          {movie && (
+            <>
+              <Image source={{ uri: movie.imageURL }} style={styles.image} />
+              <Text style={styles.cardTitle}>{movie.name}</Text>
 
-            <IconButton
-              icon={"pencil"}
-              iconColor="red"
-              style={styles.editButtonContainer}
-              onPress={() => navigation?.navigate("EditPage", { movieId: movie.id })}
-            />
-            <View style={styles.detailsContainer}>
-              <Text style={styles.cardText}>Year: {movie.year}</Text>
-              <Text style={styles.cardText}>
-                Genres: {movie.genres.join(", ")}
-              </Text>
-            </View>
-            <View style={styles.detailsContainer}>
-              <Text style={styles.cardText}>Cast: </Text>
-              <Text style={styles.cardText}>{movie.cast.join(", ")}</Text>
-            </View>
-            <Text style={styles.cardText}>Summary: </Text>
-            <Text style={styles.cardText}>{movie.extract} </Text>
-            <IconButton
-              icon={"delete"}
-              iconColor="red"
-              style={styles.deleteButtonContainer}
-              onPress={handleDeleteMovie}
-            />
-          </>
-        )}
-      </Card>
-    </View>
+              <IconButton
+                icon={"pencil"}
+                iconColor="red"
+                style={styles.editButtonContainer}
+                onPress={() =>
+                  navigation?.navigate("EditPage", { movieId: movie.id })
+                }
+              />
+              <IconButton
+                icon={"heart"}
+                iconColor={buttonPressed ? "red" : "white"}
+                style={styles.editButtonContainer}
+                onPress={() => renderFavoritesList(movie)}
+              />
+              <View style={styles.detailsContainer}>
+                <Text style={styles.cardText}>Year: {movie.releaseDate}</Text>
+                <Text style={styles.cardText}>
+                  Genres: {movie.genre.join(", ")}
+                </Text>
+              </View>
+              <View style={styles.detailsContainer}>
+                <Text style={styles.cardText}>Cast: </Text>
+                <Text style={styles.cardText}>{movie.cast.join(", ")}</Text>
+              </View>
+              <Text style={styles.cardText}>Summary: </Text>
+              <Text style={styles.cardText}>{movie.summary} </Text>
+              <IconButton
+                icon={"delete"}
+                iconColor="red"
+                style={styles.deleteButtonContainer}
+                onPress={handleDeleteMovie}
+              />
+            </>
+          )}
+        </Card>
+      </View>
     </ScrollView>
   );
 }
@@ -151,4 +171,3 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
 });
-

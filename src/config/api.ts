@@ -1,16 +1,11 @@
-import axios, { AxiosInstance } from 'axios';
-import * as SecureStore from 'expo-secure-store';
+import axios, { AxiosInstance } from "axios";
 
 const createAPI = async (): Promise<AxiosInstance> => {
-    const token = await SecureStore.getItemAsync('token');
-    const instance = axios.create({
-        baseURL: 'http://noseryoung.ddns.net:3030',
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
+  const instance = axios.create({
+    baseURL: "http://localhost:8080/",
+  });
 
-    return instance;
+  return instance;
 };
 
 export default createAPI;
