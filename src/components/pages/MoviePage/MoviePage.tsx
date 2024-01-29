@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { View, FlatList, Image, StyleSheet, TouchableWithoutFeedback } from "react-native";
+import {
+  View,
+  FlatList,
+  Image,
+  StyleSheet,
+  TouchableWithoutFeedback,
+} from "react-native";
 import MoviesService from "../../../services/MoviesService";
 import { IconButton, Text, TextInput, Button } from "react-native-paper";
 import { Movie } from "../../../types/Movie";
-import RNPickerSelect from 'react-native-picker-select';
-import { Props } from '../../../types/Props'
+import RNPickerSelect from "react-native-picker-select";
+import { Props } from "../../../types/Props";
 
 const MoviesPage: React.FC<Props> = ({ navigation }) => {
   const [movies, setMovies] = useState<Movie[]>([]);
-  const [searchTitle, setSearchTitle] = useState('');
-  const [selectedGenre, setSelectedGenre] = useState('All');
+  const [searchTitle, setSearchTitle] = useState("");
+  const [selectedGenre, setSelectedGenre] = useState("All");
   const [filteredMovies, setFilteredMovies] = useState<Movie[]>([]);
 
   useEffect(() => {
@@ -27,18 +33,21 @@ const MoviesPage: React.FC<Props> = ({ navigation }) => {
 
   const renderMovieCard = ({ item }: { item: Movie }) => (
     <TouchableWithoutFeedback
-      onPress={() => navigation?.navigate('DetailsPage', { movieId: item.id })}
+      onPress={() => navigation?.navigate("DetailsPage", { movieId: item.id })}
     >
       <View style={styles.card}>
-        <Image source={{ uri: item.thumbnail }} style={styles.thumbnail} />
+        <Image source={{ uri: item.imageURL }} style={styles.thumbnail} />
       </View>
     </TouchableWithoutFeedback>
   );
 
   const handleFilter = () => {
-    const filtered = movies.filter(movie => {
-      const titleMatch = movie.title?.toLowerCase().includes(searchTitle.toLowerCase());
-      const genreMatch = selectedGenre === 'All' || movie.genres?.includes(selectedGenre);
+    const filtered = movies.filter((movie) => {
+      const titleMatch = movie.name
+        ?.toLowerCase()
+        .includes(searchTitle.toLowerCase());
+      const genreMatch =
+        selectedGenre === "All" || movie.genre?.includes(selectedGenre);
       return titleMatch && genreMatch;
     });
     setFilteredMovies(filtered);
@@ -57,10 +66,10 @@ const MoviesPage: React.FC<Props> = ({ navigation }) => {
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          mode='flat'
-          underlineColor='white'
-          activeUnderlineColor='white'
-          textColor='white'
+          mode="flat"
+          underlineColor="white"
+          activeUnderlineColor="white"
+          textColor="white"
           placeholder="Filmtitle"
           value={searchTitle}
           onChangeText={(text) => setSearchTitle(text)}
@@ -69,39 +78,39 @@ const MoviesPage: React.FC<Props> = ({ navigation }) => {
           <RNPickerSelect
             style={{
               placeholder: {
-                color: 'red'
+                color: "red",
               },
               inputIOS: {
-                color: 'red'
+                color: "red",
               },
               inputAndroid: {
-                color: 'red'
-              }
+                color: "red",
+              },
             }}
             placeholder={{
-              label: 'Genre (All)',
-              value: 'All',
+              label: "Genre (All)",
+              value: "All",
             }}
             onValueChange={(value) => setSelectedGenre(value)}
             items={[
-              { label: 'Action', value: 'Action' },
-              { label: 'Adventure', value: 'Adventure' },
-              { label: 'Comedy', value: 'Comedy' },
-              { label: 'Crime', value: 'Crime' },
-              { label: 'Drama', value: 'Drama' },
-              { label: 'Fantasy', value: 'Fantasy' },
-              { label: 'Horror', value: 'Horror' },
-              { label: 'Thriller', value: 'Thriller' },
-              { label: 'Science Fiction', value: 'Science Fiction' },
-              { label: 'Supernatural', value: 'Supernatural' },
-              { label: 'Thriller', value: 'Thriller' },
+              { label: "Action", value: "Action" },
+              { label: "Adventure", value: "Adventure" },
+              { label: "Comedy", value: "Comedy" },
+              { label: "Crime", value: "Crime" },
+              { label: "Drama", value: "Drama" },
+              { label: "Fantasy", value: "Fantasy" },
+              { label: "Horror", value: "Horror" },
+              { label: "Thriller", value: "Thriller" },
+              { label: "Science Fiction", value: "Science Fiction" },
+              { label: "Supernatural", value: "Supernatural" },
+              { label: "Thriller", value: "Thriller" },
             ]}
           />
         </View>
         <Button
           style={styles.button}
           mode="contained"
-          buttonColor='red'
+          buttonColor="red"
           onPress={handleFilter}
         >
           Search
@@ -125,7 +134,6 @@ const MoviesPage: React.FC<Props> = ({ navigation }) => {
   );
 };
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -142,12 +150,12 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   input: {
-    backgroundColor: '#323232',
-    color: 'white',
-    width: '33%',
+    backgroundColor: "#323232",
+    color: "white",
+    width: "33%",
   },
   button: {
-    width: '33%',
+    width: "33%",
   },
   thumbnail: {
     width: 140,
@@ -182,10 +190,10 @@ const styles = StyleSheet.create({
     right: 3,
   },
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
     paddingHorizontal: 10,
   },
   pickerContainer: {
