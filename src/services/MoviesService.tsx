@@ -6,32 +6,32 @@ const MoviesService = {
 
   getMovieById: async (movieId: number): Promise<Movie> => {
     const api = await createAPI();
-    const { data } = await api.get<Movie>(`/film/${movieId}`);
+    const { data } = await api.get<Movie>(`/movies/${movieId}`);
     return data;
   },
 
   getMovie: async () => {
     const api = await createAPI();
-    const data = await api.get('/film');
+    const data = await api.get('/movies');
     return data["data"];
   },
 
   deleteMovie: async (id: number) => {
     const api = await createAPI();
-    const data = await api.delete(`/film/${id}`);
+    const data = await api.delete(`/movies/${id}`);
     console.log(data);
     return data["data"];
   },
 
   updateMovieById: async (id: number, Movie: Movie) => {
     const api = await createAPI();
-    const data = await api.put(`/film/${id}`, Movie);
+    const data = await api.put(`/movies/${id}`, Movie);
     return data["data"];
   },
 
   addMovie: async (Movie: MovieValues) => {
     const api = await createAPI();
-    const data = await api.post(`/film`, Movie);
+    const data = await api.post(`/movies/`, Movie);
     return data["data"];
   }
 };
